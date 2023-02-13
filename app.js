@@ -129,4 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const search = document.querySelector('.text-input').value;
     searchMovies(search);
   });
+  //add search by ENTER key
+  document.addEventListener('keydown', function (e) {
+    // console.log(e.key);
+    if (e.key === 'Enter') {
+      document.querySelector('.search-button').click();
+    }
+  });
 });
