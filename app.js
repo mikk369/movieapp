@@ -1,6 +1,6 @@
 const menu = document.querySelector('#mobile-menu');
 const menulinks = document.querySelector('.navbar-menu');
-
+const loader = document.querySelector('.loading');
 // Display mobile menu
 const mobileMenu = (e) => {
   menu.classList.toggle('is-active');
@@ -11,9 +11,22 @@ menu.addEventListener('click', mobileMenu);
 document.addEventListener('DOMContentLoaded', () => {
   const API_KEY = '679160b126ed0a1f34b5b2e43aaa1c59';
 
+  // show loading
+  function displayLoading() {
+    loader.classList.add('display');
+    // stop loading after some time
+    setTimeout(() => {
+      loader.classList.remove('display');
+    }, 3000);
+  }
+  // hide loading
+  function hideLoading() {
+    loader.classList.remove('display');
+  }
   // FETCH DATA
   const getMovies = async () => {
     try {
+      displayLoading();
       let response = await fetch(
         `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
       );
@@ -46,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }</p>
           </div>
         </div>`;
-
+        hideLoading();
         // changes background color depending on the score
         const ratings = document.querySelectorAll('.rating');
         ratings.forEach((rating) => {
@@ -77,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
       );
       // convert data
       const data = await response.json();
-      console.log(data);
 
       // clear old
       document.querySelector('.movie-card-grid').innerHTML = '';

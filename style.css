@@ -143,6 +143,31 @@
   background: #212529;
   min-height: 100vh;
 }
+.loading {
+  width: 2rem;
+  height: 2rem;
+  border: 5px solid #4caf50;
+  border-top: 6px solid #337735;
+  border-radius: 100%;
+  margin: auto;
+  visibility: hidden;
+  animation: spin 1s infinite linear;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+}
+.loading.display {
+  visibility: visible;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 .movie-card-grid {
   display: grid;
