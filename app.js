@@ -14,10 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // show loading
   function displayLoading() {
     loader.classList.add('display');
-    // stop loading after some time
-    setTimeout(() => {
-      loader.classList.remove('display');
-    }, 3000);
   }
   // hide loading
   function hideLoading() {
