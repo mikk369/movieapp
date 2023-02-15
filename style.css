@@ -196,7 +196,7 @@
   align-items: center;
   justify-content: space-between;
   margin: 50px auto;
-  border-radius: 9px 9px 0 0;
+  border-radius: 9px;
   background-color: #161616;
   color: #fff;
   line-height: 2rem;
@@ -256,7 +256,7 @@
 .rating {
   font-weight: bold;
   border-radius: 10px;
-  padding: 0 9px 0 9px;
+  padding: 9px 18px 9px 18px;
 }
 .rating-button-wrapper {
   align-items: center;

@@ -50,12 +50,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="year">Release: ${movies.release_date}</p>
           <div class="rating-button-wrapper">
             <button class="get-more-info-button">Get More Info</button>
-            <p class="rating" id="rating-${movies.id}">${
-          movies.vote_average
-        }</p>
+            <p class="rating" ${movies.id}">${movies.vote_average}</p>
           </div>
         </div>`;
-        hideLoading();
         // changes background color depending on the score
         const ratings = document.querySelectorAll(".rating");
         ratings.forEach((rating) => {
@@ -71,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         // add card to the grid
         document.querySelector(".movie-card-grid").appendChild(card);
+        hideLoading();
       });
     } catch (error) {
       console.log(error);
@@ -81,6 +79,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // SEARCH FUNCTION
   const searchMovies = async (search) => {
     try {
+      displayLoading();
+
       const response = await fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&page=1&query=${search}`
       );
@@ -93,7 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "/404.html";
         return;
       }
-
       // clear old
       document.querySelector(".movie-card-grid").innerHTML = "";
       // loop over response
@@ -103,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // give classname
         card.classList.add("card");
         // create the innerHTML
+
         card.innerHTML = `<img src=" ${
           "https://image.tmdb.org/t/p/w500/" + movie.poster_path
         }" alt="movie-image" />
@@ -114,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="year">Release: ${movie.release_date}</p>
           <div class="rating-button-wrapper">
             <button class="get-more-info-button">Get More Info</button>
-            <p class="rating" id="rating-${movie.id}">${movie.vote_average}</p>
+            <p class="rating" ${movie.id}">${movie.vote_average}</p>
           </div>
         </div>`;
 
@@ -131,8 +131,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           rating.style.backgroundColor;
         });
+
         // add card to the grid
         document.querySelector(".movie-card-grid").appendChild(card);
+        hideLoading();
       });
     } catch (error) {
       console.log(error);
