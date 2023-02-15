@@ -1,23 +1,23 @@
-const menu = document.querySelector('#mobile-menu');
-const menulinks = document.querySelector('.navbar-menu');
-const loader = document.querySelector('.loading');
+const menu = document.querySelector("#mobile-menu");
+const menulinks = document.querySelector(".navbar-menu");
+const loader = document.querySelector(".loading");
 // Display mobile menu
 const mobileMenu = (e) => {
-  menu.classList.toggle('is-active');
-  menulinks.classList.toggle('active');
+  menu.classList.toggle("is-active");
+  menulinks.classList.toggle("active");
 };
-menu.addEventListener('click', mobileMenu);
+menu.addEventListener("click", mobileMenu);
 
-document.addEventListener('DOMContentLoaded', () => {
-  const API_KEY = '679160b126ed0a1f34b5b2e43aaa1c59';
+document.addEventListener("DOMContentLoaded", () => {
+  const API_KEY = "679160b126ed0a1f34b5b2e43aaa1c59";
 
   // show loading
   function displayLoading() {
-    loader.classList.add('display');
+    loader.classList.add("display");
   }
   // hide loading
   function hideLoading() {
-    loader.classList.remove('display');
+    loader.classList.remove("display");
   }
   // FETCH DATA
   const getMovies = async () => {
@@ -30,17 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
 
       // clear old
-      document.querySelector('.movie-card-grid').innerHTML = '';
+      document.querySelector(".movie-card-grid").innerHTML = "";
 
       // loop over response
       data.results.forEach((movies) => {
         // create div
-        const card = document.createElement('div');
+        const card = document.createElement("div");
         // give classname
-        card.classList.add('card');
+        card.classList.add("card");
         // create the innerHTML
         card.innerHTML = `<img src=" ${
-          'https://image.tmdb.org/t/p/w500/' + movies.poster_path
+          "https://image.tmdb.org/t/p/w500/" + movies.poster_path
         }" alt="movie-image" />
         <p class="description">
           ${movies.overview}
@@ -57,20 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>`;
         hideLoading();
         // changes background color depending on the score
-        const ratings = document.querySelectorAll('.rating');
+        const ratings = document.querySelectorAll(".rating");
         ratings.forEach((rating) => {
           const score = parseFloat(rating.textContent);
           if (score >= 8) {
-            rating.style.backgroundColor = '#76FF03';
+            rating.style.backgroundColor = "#76FF03";
           } else if (score >= 6) {
-            rating.style.backgroundColor = '#FFD600';
+            rating.style.backgroundColor = "#FFD600";
           } else {
-            rating.style.backgroundColor = '#FF5733';
+            rating.style.backgroundColor = "#FF5733";
           }
           rating.style.backgroundColor;
         });
         // add card to the grid
-        document.querySelector('.movie-card-grid').appendChild(card);
+        document.querySelector(".movie-card-grid").appendChild(card);
       });
     } catch (error) {
       console.log(error);
@@ -87,17 +87,24 @@ document.addEventListener('DOMContentLoaded', () => {
       // convert data
       const data = await response.json();
 
+      // check if there are any results
+      if (data.results.length === 0) {
+        // navigate to 404 page
+        window.location.href = "/404.html";
+        return;
+      }
+
       // clear old
-      document.querySelector('.movie-card-grid').innerHTML = '';
+      document.querySelector(".movie-card-grid").innerHTML = "";
       // loop over response
       data.results.forEach((movie) => {
         // create div
-        const card = document.createElement('div');
+        const card = document.createElement("div");
         // give classname
-        card.classList.add('card');
+        card.classList.add("card");
         // create the innerHTML
         card.innerHTML = `<img src=" ${
-          'https://image.tmdb.org/t/p/w500/' + movie.poster_path
+          "https://image.tmdb.org/t/p/w500/" + movie.poster_path
         }" alt="movie-image" />
         <p class="description">
           ${movie.overview}
@@ -112,36 +119,36 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>`;
 
         // changes background color depending on the score
-        const ratings = document.querySelectorAll('.rating');
+        const ratings = document.querySelectorAll(".rating");
         ratings.forEach((rating) => {
           const score = parseFloat(rating.textContent);
           if (score >= 8) {
-            rating.style.backgroundColor = '#76FF03';
+            rating.style.backgroundColor = "#76FF03";
           } else if (score >= 6) {
-            rating.style.backgroundColor = '#FFD600';
+            rating.style.backgroundColor = "#FFD600";
           } else {
-            rating.style.backgroundColor = '#FF5733';
+            rating.style.backgroundColor = "#FF5733";
           }
           rating.style.backgroundColor;
         });
         // add card to the grid
-        document.querySelector('.movie-card-grid').appendChild(card);
+        document.querySelector(".movie-card-grid").appendChild(card);
       });
     } catch (error) {
       console.log(error);
     }
   };
-  document.querySelector('.search-button').addEventListener('click', (e) => {
+  document.querySelector(".search-button").addEventListener("click", (e) => {
     e.preventDefault();
     // get search term from input
-    const search = document.querySelector('.text-input').value;
+    const search = document.querySelector(".text-input").value;
     searchMovies(search);
   });
   //add search by ENTER key
-  document.addEventListener('keydown', function (e) {
+  document.addEventListener("keydown", function (e) {
     // console.log(e.key);
-    if (e.key === 'Enter') {
-      document.querySelector('.search-button').click();
+    if (e.key === "Enter") {
+      document.querySelector(".search-button").click();
     }
   });
 });
