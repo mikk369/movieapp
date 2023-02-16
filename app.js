@@ -1,24 +1,24 @@
 const menu = document.querySelector("#mobile-menu");
 const menulinks = document.querySelector(".navbar-menu");
 const loader = document.querySelector(".loading");
+const API_KEY = "679160b126ed0a1f34b5b2e43aaa1c59";
+
 // Display mobile menu
 const mobileMenu = (e) => {
   menu.classList.toggle("is-active");
   menulinks.classList.toggle("active");
 };
 menu.addEventListener("click", mobileMenu);
+// show loading
+function displayLoading() {
+  loader.classList.add("display");
+}
+// hide loading
+function hideLoading() {
+  loader.classList.remove("display");
+}
 
 document.addEventListener("DOMContentLoaded", () => {
-  const API_KEY = "679160b126ed0a1f34b5b2e43aaa1c59";
-
-  // show loading
-  function displayLoading() {
-    loader.classList.add("display");
-  }
-  // hide loading
-  function hideLoading() {
-    loader.classList.remove("display");
-  }
   // FETCH DATA
   const getMovies = async () => {
     try {
@@ -30,7 +30,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       // clear old
-      document.querySelector(".movie-card-grid").innerHTML = "";
+      const movieCardGrid = document.querySelector(".movie-card-grid");
+      if (movieCardGrid) {
+        movieCardGrid.innerHTML = "";
+      }
 
       // loop over response
       data.results.forEach((movies) => {
@@ -49,8 +52,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <h3 class="title">${movies.original_title}</h3>
           <p class="year">Release: ${movies.release_date}</p>
           <div class="rating-button-wrapper">
-            <button class="get-more-info-button">Get More Info</button>
-            <p class="rating" ${movies.id}">${movies.vote_average}</p>
+            <button class="get-more-info-button" data-movie-id="${
+              movies.id
+            }">Get More Info</button>
+            <p class="rating">${movies.vote_average}</p>
           </div>
         </div>`;
         // changes background color depending on the score
@@ -66,8 +71,38 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           rating.style.backgroundColor;
         });
+        async function fetchMovieData(movieId) {
+          const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`;
+
+          try {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        // get all buttons
+        const getMoreInfoButtons = document.querySelectorAll(
+          ".get-more-info-button"
+        );
+        // loop over buttons
+        getMoreInfoButtons.forEach((button) => {
+          button.addEventListener("click", async () => {
+            // Redirect to movie.html page
+            const movieId = button.dataset.movieId;
+            const movieData = await fetchMovieData(movieId);
+            // Store the movie data in localStorage
+            localStorage.setItem("movie", JSON.stringify(movieData));
+            window.location.href = "/movie.html";
+          });
+          // movieContainer.appendChild("movieInfo");
+        });
+
         // add card to the grid
-        document.querySelector(".movie-card-grid").appendChild(card);
+        if (movieCardGrid) {
+          movieCardGrid.appendChild(card);
+        }
         hideLoading();
       });
     } catch (error) {
@@ -86,7 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       // convert data
       const data = await response.json();
-
       // check if there are any results
       if (data.results.length === 0) {
         // navigate to 404 page
@@ -113,8 +147,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <h3 class="title">${movie.original_title}</h3>
           <p class="year">Release: ${movie.release_date}</p>
           <div class="rating-button-wrapper">
-            <button class="get-more-info-button">Get More Info</button>
-            <p class="rating" ${movie.id}">${movie.vote_average}</p>
+            <button class="get-more-info-button" data-movie-id="${
+              movie.id
+            }">Get More Info</button>
+            <p class="rating">${movie.vote_average}</p>
           </div>
         </div>`;
 
@@ -153,4 +189,37 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelector(".search-button").click();
     }
   });
+});
+
+// MOVIE BY ID
+document.addEventListener("DOMContentLoaded", () => {
+  // get the movie data from localStorage
+  const movieData = JSON.parse(localStorage.getItem("movie"));
+  // create a new div to hold the movie details
+  const movieDetails = document.createElement("div");
+  movieDetails.classList.add("movie-text");
+  // create image div
+  const movieImage = document.createElement("div");
+  // add a class to image div
+  movieImage.classList.add("movie-image");
+  // add inner HTML to the image div
+  movieImage.innerHTML = `<img src="${
+    "https://image.tmdb.org/t/p/w500/" + movieData.poster_path
+  }" alt="movie-image" />`;
+  // update the innerHTML of the movie details div
+  movieDetails.innerHTML = `
+  <ul>
+      <h1>${movieData.original_title}</h1>
+      <li>Year: ${movieData.release_date}</li>
+      <li>Duration: ${movieData.runtime} minutes</li>
+      <li>Revenue: ${movieData.revenue}</li>
+      <li class="overview">${movieData.overview}</li>
+    </ul>
+  `;
+  // append the movie details to an existing element in your HTML
+  const movieDetailsContainer = document.querySelector(".movie-section");
+  if (movieDetailsContainer) {
+    movieDetailsContainer.appendChild(movieImage);
+    movieDetailsContainer.appendChild(movieDetails);
+  }
 });

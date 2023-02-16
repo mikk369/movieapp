@@ -199,7 +199,6 @@
   border-radius: 9px;
   background-color: #161616;
   color: #fff;
-  line-height: 2rem;
   width: 250px;
 }
 
@@ -467,13 +466,53 @@ a {
   color: #fff;
 }
 
-.button {
+.back-button {
   margin-top: 4rem;
   padding: 1.2rem 3rem;
   color: white;
-  background-color: #04cba0;
+  background-color: #337735;
+  border-radius: 9px;
 }
 
 .button:hover {
-  background-color: #01ac88;
+  background-color: #337735;
+}
+
+/* MOVIE SECTION  */
+.button-weapper {
+  display: flex;
+  justify-content: center;
+  padding: 5rem 0 2rem 0;
+}
+
+.movie-section {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+}
+.movie-image {
+  width: 300px;
+  height: auto;
+}
+.movie-image img {
+  width: 300px;
+  height: auto;
+}
+.movie-text,
+.movie-info h1 {
+  margin-bottom: 19px;
+}
+.movie-text,
+.movie-info ul {
+  color: #fff;
+  height: 405px;
+  padding-left: 16px;
+}
+.movie-text,
+.movie-info ul,
+li {
+  line-height: 3rem;
+  margin-bottom: 9px;
+  list-style: none;
+  width: 300px;
 }
