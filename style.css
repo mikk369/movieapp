@@ -488,13 +488,19 @@ a {
 .movie-section {
   display: flex;
   justify-content: center;
-  flex-direction: row;
+}
+@media (max-width: 768px) {
+  .movie-section {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 .movie-image {
   width: 300px;
   height: auto;
 }
 .movie-image img {
+  border-radius: 9px;
   width: 300px;
   height: auto;
 }

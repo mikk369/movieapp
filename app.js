@@ -96,7 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("movie", JSON.stringify(movieData));
             window.location.href = "/movie.html";
           });
-          // movieContainer.appendChild("movieInfo");
         });
 
         // add card to the grid
@@ -115,7 +114,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const searchMovies = async (search) => {
     try {
       displayLoading();
-
       const response = await fetch(
         `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&page=1&query=${search}`
       );
@@ -136,7 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
         // give classname
         card.classList.add("card");
         // create the innerHTML
-
         card.innerHTML = `<img src=" ${
           "https://image.tmdb.org/t/p/w500/" + movie.poster_path
         }" alt="movie-image" />
@@ -167,7 +164,33 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           rating.style.backgroundColor;
         });
+        displayLoading();
+        async function fetchMovieData(movieId) {
+          const url = `https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US`;
 
+          try {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data;
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        // get all buttons
+        const getMoreInfoButtons = document.querySelectorAll(
+          ".get-more-info-button"
+        );
+        // loop over buttons
+        getMoreInfoButtons.forEach((button) => {
+          button.addEventListener("click", async () => {
+            // Redirect to movie.html page
+            const movieId = button.dataset.movieId;
+            const movieData = await fetchMovieData(movieId);
+            // Store the movie data in localStorage
+            localStorage.setItem("movie", JSON.stringify(movieData));
+            window.location.href = "/movie.html";
+          });
+        });
         // add card to the grid
         document.querySelector(".movie-card-grid").appendChild(card);
         hideLoading();
@@ -193,6 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // MOVIE BY ID
 document.addEventListener("DOMContentLoaded", () => {
+  displayLoading();
   // get the movie data from localStorage
   const movieData = JSON.parse(localStorage.getItem("movie"));
   // create a new div to hold the movie details
@@ -222,4 +246,5 @@ document.addEventListener("DOMContentLoaded", () => {
     movieDetailsContainer.appendChild(movieImage);
     movieDetailsContainer.appendChild(movieDetails);
   }
+  hideLoading();
 });
